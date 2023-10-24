@@ -1,0 +1,7 @@
+Download proteins from NCBI
+download_ncbi.sh
+
+Меняем меняем список протеинов добовляя осмысленное окончание
+добавляем COBETIA
+sed -i 's/\(WP_[0-9]\+\.[0-9]\)/\1_COBETIA/' for_clustal_cobetia_and_others.txt 
+
