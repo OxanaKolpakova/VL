@@ -1,0 +1,27 @@
+Sub CombineWorkbooks()
+Dim FilesToOpen
+Dim x As Integer
+
+Application.ScreenUpdating = False 'отключаем обновление экрана для скорости
+
+'вызываем диалог выбора файлов для импорта
+FilesToOpen = Application.GetOpenFilename _
+(FileFilter:="All files (*.*), *.*", _
+MultiSelect:=True, Title:="Files to Merge")
+
+If TypeName(FilesToOpen) = "Boolean" Then
+MsgBox "Не выбрано ни одного файла!"
+Exit Sub
+End If
+
+'проходим по всем выбранным файлам
+x = 1
+While x <= UBound(FilesToOpen)
+Set importWB = Workbooks.Open(Filename:=FilesToOpen(x))
+Sheets().Copy After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count)
+importWB.Close savechanges:=False
+x = x + 1
+Wend
+
+Application.ScreenUpdating = True
+End Sub

@@ -1,0 +1,41 @@
+ssh oxkolpakova@pbx3
+screen -S vl
+scp -r oxkolpakova@pbx3:/home/oxkolpakova/Co* /home/alexandr/Загрузки/
+scp -r /home/alexandr/VLADIK/FASTA_ref/Co* oxkolpakova@pbx3:/home/oxkolpakova/data
+
+docker pull cdiener/gapseq
+sudo docker run -it --rm --name gapseq_example -h gapseq_container -v /home/oxkolpakova:/opt/static cdiener/gapseq /bin/bash 
+wget https://sra-download.ncbi.nlm.nih.gov/traces/wgs03/wgs_aux/LJ/TD/LJTD01/LJTD01.1.fsa_nt.gz
+
+
+cd /opt/static/results
+gapseq find -p all -b 200 -m Bacteria /opt/static/data/LJTD01.1.fsa_nt.gz
+gapseq find-transport -b 200 /opt/static/data/LJTD01.1.fsa_nt.gz
+gapseq draft -r LJTD01.1-all-Reactions.tbl -t LJTD01.1-Transporter.tbl -p LJTD01.1-all-Pathways.tbl -c /opt/static/data/LJTD01.1.fsa_nt.gz -u 200 -l 100
+
+
+
+# chimera
+https://github.com/tamascogustavo/chimera
+conda activate carveme_env 
+https://githubissues.com/cdanielmachado/carveme/160
+export PATH=/home/alexandr/VLADIK/programs/cplex/bin/x86-64_linux/:$PATH
+/home/alexandr/VLADIK/programs
+cd /home/alexandr/VLADIK/programs/cplex/python/3.7/x86-64_linux/
+python setup.py install
+python /home/alexandr/VLADIK/programs/python/setup.py install
+
+chimera_core core --organism /home/alexandr/VLADIK/FASTA_ref/protein.faa --type gramneg --media M9 
+chimera_core core --organism /home/alexandr/VLADIK/FASTA_ref/protein.faa --type gramneg --media LB
+
+
+
+# blast
+makeblastdb -in Cobetia_amphilecti_KMM_296_GCF_000754225.1.fna -dbtype prot
+blastp -db Cobetia_amphilecti_KMM_296_GCF_000754225.1.fna -query KGA01942.faa -num_threads 8  > Cobetia_amphilecti_KMM_296_GCF_000754225.1_blast.hits
+cat Cobetia_* | grep -P '>|Score = |Identities =|Strand=|No hits found'
+
+makeblastdb -in Cobetia_amphilecti_B2M13_GCF_018860945.1.faa -dbtype prot
+blastp -db Cobetia_amphilecti_B2M13_GCF_018860945.1.faa -query KGA01942.faa -num_threads 8  > Cobetia_amphilecti_B2M13_GCF_018860945.1.faa_blast.hits
+
+tblastn -db Cobetia_amphilecti_B2M13_GCF_018860945.1.fna -query KGA01942.faa -num_threads 8  > Cobetia_amphilecti_B2M13_GCF_018860945.1_tblastn.hits
