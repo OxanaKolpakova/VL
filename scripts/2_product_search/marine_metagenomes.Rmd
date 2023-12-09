@@ -1,0 +1,53 @@
+---
+title: "marine_metagenomes"
+author: "Oxana Kolpakova"
+date: "24 10 2022"
+output: html_document
+---
+
+```{r}
+library(sybil)
+library(data.table)
+```
+
+
+
+```{r}
+mod <- readRDS("C:/VL_Cobetia/gap_rez/Cobetia_amphilecti_B2M13_GCF_018860945.1-draft.RDS")
+```
+
+
+
+```{r}
+mtf <- optimizeProb(mod, algorithm="mtf")
+# ex <- findExchReact(mod)
+# ex.dt <- data.table(ex=ex@react_id, met=mod@met_name[ex@met_pos], flux=mtf@fluxdist@fluxes[ex@react_pos])
+```
+
+```{r}
+sol.dt <- data.table(react_id=mod@react_id, react_name=mod@react_name, flux=mtf@fluxdist@fluxes[1:mod@react_num], rxn=mod@react_attr$rxn, name=mod@react_attr$name, ec=mod@react_attr$ec, qseqid=mod@react_attr$qseqid, pident=mod@react_attr$pident, evalue=mod@react_attr$evalue, bitscore=mod@react_attr$bitscore, qcovs=mod@react_attr$qcovs, pathway=mod@react_attr$pathway, status=mod@react_attr$status, pathway.status=mod@react_attr$pathway.status)
+```
+
+```{r}
+Finded <- sol.dt[grepl("3.1.3.1", ec)]
+#Finded <- na.omit(Finded)
+Finded
+```
+
+
+
+```{r}
+Pathways <- read.table("C:/Users/1/Desktop/final/Pseudoalteromonas_arctica_A_37_1_2_GCA_000238395_4-all-Pathways.tbl", fill = TRUE, header = T, sep = "\t")
+setnames(Pathways, "ID", "pathway")
+Pathways
+```
+
+
+```{r}
+FINAL <- merge(x = Finded, y = Pathways, by = "pathway", all.x = T)
+FINAL
+```
+```{r}
+#library(kulife)
+write.table(FINAL, file = "C:/Users/1/Desktop/final/Pseudoalteromonas_arctica_A_37_1_2_FINALPATH.tbl", row.names=F, na="", col.names=T, sep="\t")
+```
