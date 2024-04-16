@@ -1,4 +1,5 @@
 # LPS-Dephosphorylating Cobetia amphilecti Alkaline Phosphatase of PhoA Family Divergent from the Multiple Homologues of Cobetia spp
+Authors: Oxana Kolpakova, Glebus Alexander
 
 This repository contains the code from the research conducted. 
 
