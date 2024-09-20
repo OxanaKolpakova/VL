@@ -24,3 +24,8 @@ https://www.mdpi.com/2076-2607/12/3/631
 `/scripts/2_product_search` -- directory that contains scripts to search for products in gapseq output files
 
 `/scripts/3_synteny` -- directory that contains custom scripts for manually studying synteny
+
+## Contributors
+
+- Oxana Kolpakova ([@OxanaKolpakova](https://github.com/OxanaKolpakova))
+- Glebus Aleksandr ([@glebus-sasha](https://github.com/glebus-sasha/))
